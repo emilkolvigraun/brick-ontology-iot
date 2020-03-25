@@ -4,7 +4,7 @@ from model import *
 
 TTL_FILENAME = 'boards.ttl'
 
-data = pandas.read_csv('dataplot/converted.csv')
+data = pandas.read_csv('dataplot/data/converted.csv')
 
 graph = create_model()
 
@@ -25,7 +25,7 @@ temperature = NAMESPACE['board/sensor/temperature']
 graph.add((temperature, RDF.subClassOf, BRICK['Sensor']))
 graph.add((temperature, NAMESPACE.isA, Literal('mcp9700')))
 graph.add((temperature, NAMESPACE.minValue, Literal(0)))
-graph.add((temperature, NAMESPACE.maxValue, Literal(200)))
+graph.add((temperature, NAMESPACE.maxValue, Literal(150)))
 graph.add((temperature, NAMESPACE.rawValues, Literal(data['truth'])))
 graph.add((temperature, NAMESPACE.convertedValues, Literal([i for i in data.calculated])))
 
@@ -33,6 +33,7 @@ graph.add((temperature, NAMESPACE.convertedValues, Literal([i for i in data.calc
 conversion  = NAMESPACE['board/sensor/temperature/conversion']
 graph.add((conversion, RDF.type, BRICK['Thing']))
 graph.add((conversion, RDF.subClassOf, BRICK['Thing']))
+graph.add((conversion, NAMESPACE.linkedTo, Literal('mcp9700')))
 graph.add((conversion, NAMESPACE.isDefinedBy, temperature))
 graph.add((conversion, NAMESPACE.formula, Literal('y = 0.05253585325722113*(x-1452.0035211267605)+23.2')))
 
